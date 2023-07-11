@@ -46,6 +46,29 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  /* 
+  InterstitialAd 객체 선언부터 loadInterAd()함수까지
+  전면광고 추가 코드 
+  */
+
+  InterstitialAd? _interstitialAd;
+
+  void loadInterAd() {
+    InterstitialAd.load(
+      adUnitId: Platform.isAndroid
+          ? 'ca-app-pub-3940256099942544/1033173712' //Android ad unit ID
+          : 'ca-app-pub-3940256099942544/4411468910', //iOS ad unit ID
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          _interstitialAd = ad;
+          _interstitialAd!.show();
+        },
+        onAdFailedToLoad: (LoadAdError error) {},
+      ),
+    );
+  }
+
   final BannerAd myBanner = BannerAd(
     // Test 광고 ID, 광고 승인받은 후 생성한 광고 unit ID 로 바꾸기
     adUnitId: Platform.isAndroid
@@ -64,6 +87,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    loadInterAd(); //전면광고 추가 코드
     myBanner.load();
   }
 
