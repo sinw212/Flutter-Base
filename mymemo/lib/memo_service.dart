@@ -8,16 +8,24 @@ import 'main.dart';
 class Memo {
   Memo({
     required this.content,
+    this.isPinned = false,
   });
 
   String content;
+  bool isPinned;
 
   Map toJson() {
-    return {'content': content};
+    return {
+      'content': content,
+      'isPinned': isPinned,
+    };
   }
 
   factory Memo.fromJson(json) {
-    return Memo(content: json['content']);
+    return Memo(
+      content: json['content'],
+      isPinned: json['isPinned'],
+    );
   }
 }
 
@@ -28,8 +36,8 @@ class MemoService extends ChangeNotifier {
   }
 
   List<Memo> memoList = [
-    Memo(content: '장보기 목록: 사과, 양파'), // 더미(dummy) 데이터
-    Memo(content: '새 메모'), // 더미(dummy) 데이터
+    // Memo(content: '장보기 목록: 사과, 양파'), // 더미(dummy) 데이터
+    // Memo(content: '새 메모'), // 더미(dummy) 데이터
   ];
 
   createMemo({required String content}) {
@@ -42,6 +50,17 @@ class MemoService extends ChangeNotifier {
   updateMemo({required int index, required String content}) {
     Memo memo = memoList[index];
     memo.content = content;
+    notifyListeners();
+    saveMemoList();
+  }
+
+  updatePinMemo({required int index}) {
+    Memo memo = memoList[index];
+    memo.isPinned = !memo.isPinned; //현재 상태의 반대
+    memoList = [
+      ...memoList.where((element) => element.isPinned),
+      ...memoList.where((element) => !element.isPinned)
+    ];
     notifyListeners();
     saveMemoList();
   }

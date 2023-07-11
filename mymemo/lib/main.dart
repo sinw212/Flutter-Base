@@ -61,9 +61,11 @@ class _HomePageState extends State<HomePage> {
                     return ListTile(
                       // 메모 고정 아이콘
                       leading: IconButton(
-                        icon: Icon(CupertinoIcons.pin),
+                        icon: Icon(memo.isPinned
+                            ? CupertinoIcons.pin_fill
+                            : CupertinoIcons.pin),
                         onPressed: () {
-                          print('$memo : pin 클릭 됨');
+                          memoService.updatePinMemo(index: index);
                         },
                       ),
                       // 메모 내용 (최대 3줄까지만 보여주도록)
@@ -172,7 +174,7 @@ class DetailPage extends StatelessWidget {
             // 확인 버튼
             TextButton(
               onPressed: () {
-                memoService.deleteMemo(index: index); // index에 해당하는 항목 삭제
+                memoService.deleteMemo(index: index);
                 Navigator.pop(context); // 팝업 닫기
                 Navigator.pop(context); // HomePage 로 가기
               },
