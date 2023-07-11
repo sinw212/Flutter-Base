@@ -74,6 +74,13 @@ class _HomePageState extends State<HomePage> {
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
+                      trailing: Text(
+                          //trailing : ListTile 중 뒷부분에 해당
+                          memo.updatedAt ?? ""
+                          // memo.updatedAt == null
+                          //     ? ""
+                          //     : memo.updatedAt.toString().substring(0, 19),
+                          ),
                       onTap: () {
                         // 아이템 클릭시
                         Navigator.push(
